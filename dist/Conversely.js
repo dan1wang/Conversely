@@ -103,8 +103,9 @@ function stringify(src) {
         if (typeof src.valueOf === 'function') {
             objectValue = src.valueOf();
         }
-        if (typeof src.stringify === 'function') {
-            objectString = src.stringify();
+        if (typeof src.toString === 'function') {
+            objectString = src.toString();
+            // console.log(objectString);
             if (objectString === '[object Object]')
                 objectString = null;
         }

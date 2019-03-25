@@ -358,8 +358,8 @@ function stringify(src: Stringable): string|null {
       objectValue = src.valueOf();
     }
 
-    if (typeof src.stringify === 'function') {
-      objectString = src.stringify();
+    if (typeof src.toString === 'function') {
+      objectString = src.toString();
       if (objectString === '[object Object]') objectString = null;
     }
 
