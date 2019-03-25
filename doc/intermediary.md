@@ -72,7 +72,8 @@ parameters without using string parser.
 Instead of:
 ```JavaScript
 properties.define('max', 100);
-properties.define('length').expect( 'max:"max"'); // need a text parser
+// Need a text parser for this to work
+properties.define('length').expect( 'max:"max"');
 
 // :
 
@@ -81,7 +82,8 @@ properties.length.validate();
 Implement like this:
 ```JavaScript
 properties.define('max', 100);
-properties.define('length').expect( {max: properties.max} );
+// Regular JavaScript. No parser required.
+properties.define('length').expect( {max: properties.ref('max')} );
 
 // :
 properties.length.validate();
