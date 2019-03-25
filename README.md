@@ -1,6 +1,7 @@
 # Conversely
 
 [![Code Style: Google](https://img.shields.io/badge/code%20style-google-blueviolet.svg)](https://github.com/google/gts)
+[![Build Status](https://travis-ci.org/dan1wang/Conversely.svg?branch=master)](https://travis-ci.org/dan1wang/Conversely)
 
 ***PROJECT IS WORK IN PROGRESS***
 
