@@ -2,7 +2,7 @@
 
 /* eslint no-var: off */
 
-var conversely = require('../build/index.js');
+var conversely = require('../build/Conversely');
 var assert = require('chai').assert;
 
 describe('numberify()', function() {
