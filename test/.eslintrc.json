@@ -31,6 +31,8 @@
     "oBooleanTrue": "readonly",
     "oBooleanFalse": "readonly",
     "oNull": "readonly",
+    "oObject": "readonly",
+    "o101": "readonly",
     "fnObjNumberNaN": "readonly",
     "fnObjNumberZero": "readonly",
     "fnObjNumberOne": "readonly",

@@ -31,18 +31,18 @@ describe('numberify()', function() {
     it('should convert () => "2" to 2', function() {
       assert.strictEqual( conversely.numberify( fnStringTwo ), 2);
     });
-    it('should convert () => true to 1', function() {
-      assert.strictEqual( conversely.numberify( fnBooleanTrue ), 1);
-    });
     it('should convert () => false to 0', function() {
       assert.strictEqual( conversely.numberify( fnBooleanFalse ), 0);
+    });
+    it('should convert () => true to 1', function() {
+      assert.strictEqual( conversely.numberify( fnBooleanTrue ), 1);
     });
     it('should convert () => null to null', function() {
       assert.strictEqual( conversely.numberify( fnNull ), null);
     });
   });
   context('with object as argument', function() {
-    it('should convert new WhatYouSaid(NaN)  to null', function() {
+    it('should convert new WhatYouSaid(NaN) to null', function() {
       assert.strictEqual( conversely.numberify( oNumberNaN ), null);
     });
     it('should convert new WhatYouSaid(0) to 0', function() {
@@ -66,18 +66,24 @@ describe('numberify()', function() {
     it('should convert new WhatYouSaid("2") to null', function() {
       assert.strictEqual( conversely.numberify( oStringTwo ), 2);
     });
-    it('should convert new WhatYouSaid(true) to 1', function() {
-      assert.strictEqual( conversely.numberify( fnBooleanTrue ), 1);
-    });
     it('should convert new WhatYouSaid(false) to 0', function() {
       assert.strictEqual( conversely.numberify( fnBooleanFalse ), 0);
+    });
+    it('should convert new WhatYouSaid(true) to 1', function() {
+      assert.strictEqual( conversely.numberify( fnBooleanTrue ), 1);
     });
     it('should convert new WhatYouSaid(null) to null', function() {
       assert.strictEqual( conversely.numberify( fnNull ), null);
     });
+    it('should convert {} to null', function() {
+      assert.strictEqual( conversely.numberify( oObject ), null);
+    });
+    it('should convert {101} to 101', function() {
+      assert.strictEqual( conversely.numberify( o101 ), 101);
+    });
   });
   context('with function returning object as argument', function() {
-    it('should convert new WhatYouSaid(NaN)  to null', function() {
+    it('should convert () => new WhatYouSaid(NaN) to null', function() {
       assert.strictEqual( conversely.numberify( fnObjNumberNaN ), null);
     });
     it('should convert () => new WhatYouSaid(0) to 0', function() {
@@ -101,11 +107,11 @@ describe('numberify()', function() {
     it('should convert () => new WhatYouSaid("2") to null', function() {
       assert.strictEqual( conversely.numberify( fnObjStringTwo ), 2);
     });
-    it('should convert () => new WhatYouSaid(true) to 1', function() {
-      assert.strictEqual( conversely.numberify( fnObjBooleanTrue ), 1);
-    });
     it('should convert () => new WhatYouSaid(false) to 0', function() {
       assert.strictEqual( conversely.numberify( fnObjBooleanFalse ), 0);
+    });
+    it('should convert () => new WhatYouSaid(true) to 1', function() {
+      assert.strictEqual( conversely.numberify( fnObjBooleanTrue ), 1);
     });
     it('should convert () => new WhatYouSaid(null) to null', function() {
       assert.strictEqual( conversely.numberify( fnObjNull ), null);

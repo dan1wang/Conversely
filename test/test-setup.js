@@ -33,6 +33,11 @@ global.oStringTwo = new WhatYouSaid('2');
 global.oBooleanTrue = new WhatYouSaid(true);
 global.oBooleanFalse = new WhatYouSaid(false);
 global.oNull = new WhatYouSaid(null);
+global.oObject = {};
+global.o101 = {
+  valueOf: function() {return 101;},
+  toString: function() {return 'one oh one';},
+};
 
 global.fnObjNumberNaN = function() {return global.oNumberNaN;};
 global.fnObjNumberZero = function() {return global.oNumberZero;};
