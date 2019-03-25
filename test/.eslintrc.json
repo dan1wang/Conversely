@@ -1,12 +1,51 @@
 {
   "extends": ["eslint:recommended", "google"],
   "parserOptions": {
-        "ecmaVersion": 5
-    },
-    "env": {
-        "es5": true,
-        "browser": true
-    },
+    "ecmaVersion": 3
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "node": true,
+    "mocha": true
+  },
+  "globals": {
+    "fnNumberNaN": "readonly",
+    "fnNumberZero": "readonly",
+    "fnNumberOne": "readonly",
+    "fnNumberTwo": "readonly",
+    "fnStringHuh": "readonly",
+    "fnStringZero": "readonly",
+    "fnStringOne": "readonly",
+    "fnStringTwo": "readonly",
+    "fnBooleanTrue": "readonly",
+    "fnBooleanFalse": "readonly",
+    "fnNull": "readonly",
+    "oNumberNaN": "readonly",
+    "oNumberZero": "readonly",
+    "oNumberOne": "readonly",
+    "oNumberTwo": "readonly",
+    "oStringHuh": "readonly",
+    "oStringZero": "readonly",
+    "oStringOne": "readonly",
+    "oStringTwo": "readonly",
+    "oBooleanTrue": "readonly",
+    "oBooleanFalse": "readonly",
+    "oNull": "readonly",
+    "fnObjNumberNaN": "readonly",
+    "fnObjNumberZero": "readonly",
+    "fnObjNumberOne": "readonly",
+    "fnObjNumberTwo": "readonly",
+    "fnObjStringHuh": "readonly",
+    "fnObjStringZero": "readonly",
+    "fnObjStringOne": "readonly",
+    "fnObjStringTwo": "readonly",
+    "fnObjBooleanTrue": "readonly",
+    "fnObjBooleanFalse": "readonly",
+    "fnObjNull": "readonly",
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
   "rules": {
   }
 }
