@@ -1,11 +1,10 @@
 {
   "extends": ["eslint:recommended", "google"],
   "parserOptions": {
-    "ecmaVersion": 2017
+    "ecmaVersion": 5
   },
   "env": {
     "browser": true,
-    "es6": true,
     "node": true,
     "mocha": true
   },
