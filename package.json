@@ -36,11 +36,11 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "chai": "*",
+    "chai": "^4.2.0",
     "eslint": "^5.15.3",
     "eslint-config-google": "^0.12.0",
     "gts": "^0.9.0",
-    "mocha": "*",
+    "mocha": "^6.0.2",
     "typescript": "^3.3.4"
   }
 }
