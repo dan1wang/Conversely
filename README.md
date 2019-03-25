@@ -1,5 +1,7 @@
 # Conversely
 
+[![Code Style: Google](https://img.shields.io/badge/code%20style-google-blueviolet.svg)](https://github.com/google/gts)
+
 ***PROJECT IS WORK IN PROGRESS***
 
 A lightweight, platform-independent library of functions for evaluating a
@@ -37,7 +39,7 @@ Change into the cloned/extracted directory and install the dependencies
 ```
 npm install
 ```
-  
+
 ## Usage
 
 All examples below assume you are using Node.js. For using the library with

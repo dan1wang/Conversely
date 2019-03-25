@@ -4,29 +4,29 @@
 
 'use strict';
 
- /**
-  * A parameterless function that returns a number.
-  * @ignore
-  * The following can be assigned to NumberFn:
-  * ```
-  * fn = () => Math.random();
-  * fn = (n?:number) => (n===undefined)?1:n+1;
-  * ```
-  * The following cannot be assigned to NumberFn:
-  * ```
-  * fn = (n?:number) => (Number(n)>0); // returns a boolean
-  * fn = (n:number) => n+1; // requires one parameter
-  * ```
-  */
-type NumberFn = {():number};
+/**
+ * A parameterless function that returns a number.
+ * @ignore
+ * The following can be assigned to NumberFn:
+ * ```
+ * fn = () => Math.random();
+ * fn = (n?:number) => (n===undefined)?1:n+1;
+ * ```
+ * The following cannot be assigned to NumberFn:
+ * ```
+ * fn = (n?:number) => (Number(n)>0); // returns a boolean
+ * fn = (n:number) => n+1; // requires one parameter
+ * ```
+ */
+type NumberFn = () => number;
 /** A parameterless function that returns a string. See [[NumberFn]]. */
-type StringFn = {():string};
+type StringFn = () => string;
 /** A parameterless function that returns a boolean. See [[NumberFn]]. */
-type BooleanFn = {():boolean};
+type BooleanFn = () => boolean;
 /** A parameterless function that returns an object. See [[NumberFn]]. */
-type ObjectFn = {():object};
+// type ObjectFn = {():object};
 /** A parameterless function that returns an array. See [[NumberFn]]. */
-type ArrayFn = {():[]};
+// type ArrayFn = {():[]};
 
 // Note: we can't actually test if a function is parameterless.
 // We could check if foo.length === 0 if a function is written like
@@ -38,11 +38,12 @@ type ArrayFn = {():[]};
 // aren't written that way anyway.
 
 // tslint:disable:no-any
-type AnyObj = {[key:string]:any;};
-type ConvertibleFn = NumberFn|StringFn|BooleanFn|{():ConvertibleObj};
-type ConvertibleObj =
-  {valueOf:NumberFn|StringFn|BooleanFn}&AnyObj|
-  {toString:NumberFn|StringFn|BooleanFn}&AnyObj;
+type ConvertibleFn = NumberFn|StringFn|BooleanFn|(() => ConvertibleObj);
+type ConvertibleObj = {
+  [key: string]: any, valueOf: NumberFn|StringFn|BooleanFn;
+}|{
+  [key: string]: any, toString: NumberFn|StringFn|BooleanFn;
+};
 // tslint:enable:no-any
 
 // **********************************************************************
@@ -68,17 +69,18 @@ type NumberableFn = ConvertibleFn;
 type NumberableObj = ConvertibleObj;
 
 /**
- * A number, string, boolean, object, or function that may be convertible to a number.
+ * A number, string, boolean, object, or function that may be convertible to
+ * a number.
  */
 type Numberable = number|string|boolean|NumberableFn|NumberableObj;
 
- /**
-  * Strictly convert a string to either a finite number or null.
-  * ```
-  * numberify('2 '); // returns 2
-  * numberify('2a'); // returns null
-  * ```
-  */
+/**
+ * Strictly convert a string to either a finite number or null.
+ * ```
+ * numberify('2 '); // returns 2
+ * numberify('2a'); // returns null
+ * ```
+ */
 function numberify(src: string): number|null;
 
 /**
@@ -125,29 +127,30 @@ function numberify(src: object): number|null;
  */
 function numberify(src: Function): number|null;
 
- /**
-  * Evaluate a value and convert it to either a finite number or null.
-  */
+/**
+ * Evaluate a value and convert it to either a finite number or null.
+ */
 function numberify(src: Numberable): number|null {
-
-  function __toFinite(v: any): number|null { // tslint:disable-line:no-any
+  function __numberify(v: any): number|null {  // tslint:disable-line:no-any
     switch (typeof v) {
       case 'number':
-          // Use isFinite() instead of Number.isFinite() to target GAS
-          return isFinite(v)?v:null;
+        // Use isFinite() instead of Number.isFinite() to target GAS
+        return isFinite(v) ? v : null;
       case 'string':
-          // parseFloat() is not used because it can return inaccurate result
-          // e.g. Number.parseFloat('1.2a') returns 1.2
-          v = Number(v);
-          return isNaN(v)?null:v;
+        // parseFloat() is not used because it can return inaccurate result
+        // e.g. Number.parseFloat('1.2a') returns 1.2
+        v = Number(v);
+        return isNaN(v) ? null : v;
       case 'boolean':
-          return v?1:0;
+        return v ? 1 : 0;
       default:
-          return null;
+        return null;
     }
   }
 
-  if (typeof src === 'function') { src = (src as NumberableFn)(); }
+  if (typeof src === 'function') {
+    src = (src as NumberableFn)();
+  }
 
   if ((src === null) || (src === undefined)) return null;
 
@@ -155,17 +158,17 @@ function numberify(src: Numberable): number|null {
     let objectValue: number|null = null;
 
     if (typeof src.valueOf === 'function') {
-      objectValue = __toFinite(src.valueOf());
+      objectValue = __numberify(src.valueOf());
     }
 
     if ((objectValue === null) && (typeof src.toString === 'function')) {
-      objectValue = __toFinite(src.toString());
+      objectValue = __numberify(src.toString());
     }
 
     return objectValue;
   }
 
-  return __toFinite(src);
+  return __numberify(src);
 }
 
 // **********************************************************************
@@ -191,7 +194,8 @@ type BooleanableFn = ConvertibleFn;
 type BooleanableObj = ConvertibleObj;
 
 /**
- * A number, string, boolean, object, or function that may be convertible to a boolean.
+ * A number, string, boolean, object, or function that may be convertible
+ * to a boolean.
  */
 type Booleanable = number|string|boolean|BooleanableFn|BooleanableObj;
 
@@ -254,23 +258,24 @@ function booleanify(src: Function): boolean|null;
  * (either true or false)..
  */
 function booleanify(src: Booleanable): boolean|null {
-
-  function __booleanify(v: any): boolean|null { // tslint:disable-line:no-any
+  function __booleanify(v: any): boolean|null {  // tslint:disable-line:no-any
     switch (v) {
-      case "1":
+      case '1':
       case 1:
       case true:
-          return true;
-      case "0":
+        return true;
+      case '0':
       case 0:
       case false:
-          return false;
+        return false;
       default:
-          return null;
+        return null;
     }
   }
 
-  if (typeof src === 'function') { src = (src as BooleanableFn)(); }
+  if (typeof src === 'function') {
+    src = (src as BooleanableFn)();
+  }
 
   if ((src === null) || (src === undefined)) return null;
 
@@ -308,40 +313,46 @@ type StringableFn = ConvertibleFn;
  * a string that is not "[object Object]", or a boolean.
  * Example:
  * ```
- * person = {fName: 'John', lName: 'Doe', valueOf: function() {return this.fName + ' ' + this.lName;}};
+ * person = {
+ *   fName: 'John',
+ *   lName: 'Doe',
+ *   valueOf: function() {return this.fName + ' ' + this.lName;}
+ * };
  * ```
  */
 type StringableObj = ConvertibleObj;
 
 /**
- * A number, string, boolean, object, or function that may be convertible to a number.
+ * A number, string, boolean, object, or function that may be convertible
+ * to a number.
  */
 type Stringable = number|string|boolean|StringableFn|StringableObj;
 
 /** Evaluate a value and convert it to either a string or null */
 function stringify(src: Stringable): string|null {
-
-  function __stringify(v: any): string|null { // tslint:disable-line:no-any
+  function __stringify(v: any): string|null {  // tslint:disable-line:no-any
     switch (typeof v) {
       case 'number':
-          return isFinite(v)?String(v):null; // Do not convert Infinity or NaN
+        // Do not convert Infinity or NaN
+        return isFinite(v) ? String(v) : null;
       case 'string':
-          return v;
+        return v;
       case 'boolean':
-          return v?"1":"0";
+        return v ? '1' : '0';
       default:
-          return null;
+        return null;
     }
   }
 
-  if (typeof src === 'function') { src = (src as StringableFn)(); }
+  if (typeof src === 'function') {
+    src = (src as StringableFn)();
+  }
 
   if ((src === null) || (src === undefined)) return null;
 
   if (typeof src === 'object') {
-
-    let objectValue: any = null;  // tslint:disable-line:no-any
-    let objectString: any = null; // tslint:disable-line:no-any
+    let objectValue: any = null;   // tslint:disable-line:no-any
+    let objectString: any = null;  // tslint:disable-line:no-any
 
     if (typeof src.valueOf === 'function') {
       objectValue = src.valueOf();
@@ -354,7 +365,7 @@ function stringify(src: Stringable): string|null {
 
     // valueOf() takes precedence unless stringify() is a string
     if (typeof objectString === 'string') return objectString;
-    if ((objectValue !== null)&&(objectValue !== undefined)) {
+    if ((objectValue !== null) && (objectValue !== undefined)) {
       return __stringify(objectValue);
     }
     return __stringify(objectString);
@@ -362,3 +373,9 @@ function stringify(src: Stringable): string|null {
 
   return __stringify(src);
 }
+
+export = {
+  numberify,
+  stringify,
+  booleanify
+};
