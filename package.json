@@ -21,8 +21,8 @@
     "javascript",
     "node.js"
   ],
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "main": "dist/Conversely.js",
+  "types": "dist/Conversely.d.ts",
   "scripts": {
     "build": "tsc",
     "test": "mocha",
