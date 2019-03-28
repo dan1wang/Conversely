@@ -15,5 +15,13 @@
   "exclude": [
     "node_modules",
     "**/*.spec.ts",
-   ]
+  ],
+  "typedocOptions": {
+    "excludeExternals": true,
+    "includes": "src",
+    "includeDeclarations": true,
+    "mode": "file",
+    "name": "Conversely Documentation",
+    "out": "docs"
+  }
 }
