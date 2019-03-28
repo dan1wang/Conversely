@@ -19,7 +19,6 @@ export type Primitive = boolean|number|string|null|undefined;
 /**
  * A parameterless function that returns a boolean.
  *
- * Example:
  * ```JavaScript
  * // no parameter
  * coinToss = function() {return (Math.random() < 0.5) ? false : true;};
@@ -32,7 +31,6 @@ export type BooleanFn = () => boolean;
 /**
  * A parameterless function that returns a number.
  *
- * Example:
  * ```JavaScript
  * // no parameter
  * function rand() { return Math.random() };
@@ -45,7 +43,6 @@ export type NumberFn = () => number;
 /**
  * A parameterless function that returns a string.
  *
- * Example:
  * ```JavaScript
  * // no parameter
  * hello = function() {return 'Hello, World.' };
@@ -57,7 +54,7 @@ export type StringFn = () => string;
 
 /**
  * A parameterless function which returns a number, a string, a boolean,
- * or a [[Wrapper]](wrapper object).
+ * or a [[Wrapper]] (wrapper object).
  */
 export type WrapperFn = NumberFn|StringFn|BooleanFn|(() => Wrapper);
 
@@ -73,7 +70,7 @@ export type WrapperFn = NumberFn|StringFn|BooleanFn|(() => Wrapper);
 /**
  * A wrapper object with a `valueOf()` method which returns a number,
  * a string, or a boolean.
- * Example:
+ *
  * ```JavaScript
  * // This is a wrapper object
  * range = {min: 0, max: 5, valueOf: function() {return this.max-this.min;}};
@@ -81,16 +78,16 @@ export type WrapperFn = NumberFn|StringFn|BooleanFn|(() => Wrapper);
  * range2 = {min: 0, max: 5 }; // range2.valueOf() returns reference to range2
  * ```
  */
-export interface ValueWrapper {
-  [key: string]: any; // tslint:disable-line:no-any
+type WrapperOfValue = {
+  [key: string]: any, // tslint:disable-line:no-any
   valueOf: NumberFn|StringFn|BooleanFn;
-}
+};
 
 /**
  * A wrapper object with a `toString()` method which returns a string.
  * Built-in objects all have `toString()` method, so any object is a
- * StringWrapper by default.
- * Example:
+ * WrapperOfString by default.
+ *
  * ```JavaScript
  * person = {
  *   fName: 'John',
@@ -99,20 +96,20 @@ export interface ValueWrapper {
  * };
  * ```
  */
-export interface StringWrapper {
-  [key: string]: any; // tslint:disable-line:no-any
-  toString: NumberFn|StringFn|BooleanFn;
-}
+type WrapperOfString = {
+  [key: string]: any, // tslint:disable-line:no-any
+  toString: NumberFn|StringFn|BooleanFn
+};
 
 /**
  * A wrapper object with either a `valueOf()` or a `toString()` method
- * which returns a [[primitive]](Primitive).
- * Example:
- * ```
+ * which returns a [[Primitive]]
+ * 
+ * ```JavaScript
  * // A wrapper that evaluates as a boolean.
  * equal = {a: 1, b: 2, valueOf: function() {return a===b}};
  * // A wrapper that evaluates as a number.
  * range = {min: 0, max: 5, valueOf: function() {return this.max-this.min;}};
  * ```
  */
-export type Wrapper = ValueWrapper|StringWrapper;
+export type Wrapper = WrapperOfValue|WrapperOfString;

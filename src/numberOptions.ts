@@ -146,15 +146,16 @@ interface NumberOptions {
   };
   /**
    * JavaScript recognizes some rather esoteric string representation of
-   * number. These options allows for turning off the behavior.
+   * number. By default, _Conversely_ only recognizes decimal representation.
+   * These options allow for controlling recognition of non-decimal
+   * representations.
    */
   recognize: {
-    hex: boolean;
     /**
      * Specify if hexidecimal representation should be recognized. If `true`,
      * `number()` and `numberify()` would return the interpreted value. If
      *  `false`, `number()` and `numberify()` would interpret the source data
-     * as not-a-number and return an error value specified by
+     * as not-a-number and return the error value specified by
      * `Conversely.numberOptions.valueOf.NaN` (`null` by default).
      * ```JavaScript
      * // Glaring mistake
@@ -171,10 +172,96 @@ interface NumberOptions {
      * convr.number(testValue); // returns 43981
      * ```
      */
+    hex: boolean;
+
+    /**
+     * Specify if binary representation should be recognized. If `true`,
+     * `number()` and `numberify()` would return the interpreted value. If
+     *  `false`, `number()` and `numberify()` would interpret the source data
+     * as not-a-number and return the error value specified by
+     * `Conversely.numberOptions.valueOf.NaN` (`null` by default).
+     * ```JavaScript
+     * // Typo of 0811?
+     * const testValue = "0B11";
+     * //
+     * // Native JavaScript typecasting
+     * Number(testValue);  // returns 3
+     * //
+     * // Conversely typecasting
+     * const convr = conversely;
+     * convr.numberOptions.recognize.bin = false; // default
+     * convr.number(testValue); // returns null
+     * convr.numberOptions.recognize.bin = true; // overriding the default
+     * convr.number(testValue); // returns 3
+     * ```
+     */
     bin: boolean;
+
+    /**
+     * Specify if binary representation should be recognized. If `true`,
+     * `number()` and `numberify()` would return the interpreted value. If
+     *  `false`, `number()` and `numberify()` would interpret the source data
+     * as not-a-number and return the error value specified by
+     * `Conversely.numberOptions.valueOf.NaN` (`null` by default).
+     * ```JavaScript
+     * const testValue = "0o77";
+     * //
+     * // Native JavaScript typecasting
+     * Number(testValue);  // returns 63
+     * //
+     * // Conversely typecasting
+     * const convr = conversely;
+     * convr.numberOptions.recognize.octal = false; // default
+     * convr.number(testValue); // returns null
+     * convr.numberOptions.recognize.octal = true; // overriding the default
+     * convr.number(testValue); // returns 63
+     * ```
+     */
     octal: boolean;
-    exp: boolean;
+
+    /**
+     * Specify if exponent should be recognized. If `true`,
+     * `number()` and `numberify()` would return the interpreted value. If
+     *  `false`, `number()` and `numberify()` would interpret the source data
+     * as not-a-number and return the error value specified by
+     * `Conversely.numberOptions.valueOf.NaN` (`null` by default).
+     * ```JavaScript
+     * // 1 × 10⁵
+     * const testValue = "1e5";
+     * //
+     * // Native JavaScript typecasting
+     * Number(testValue);  // returns 100,000
+     * //
+     * // Conversely typecasting
+     * const convr = conversely;
+     * convr.numberOptions.recognize.exp = false; // default
+     * convr.number(testValue); // returns null
+     * convr.numberOptions.recognize.exp = true; // overriding the default
+     * convr.number(testValue); // returns 100,000
+     * ```
+     */
+     exp: boolean;
   };
+  /**
+   * Specify if a decimal representation with leading zero(s) is should
+   * be rejected.
+   * If `true`, `number()` and `numberify()` interpret the such representation
+   * as not-a-number and return the error value specified by
+   * `Conversely.numberOptions.valueOf.NaN` (`null` by default).
+   * ```JavaScript
+   * const testValue = "0100";
+   * //
+   * // Native JavaScript typecasting
+   * Number(testValue);  // returns 100
+   * //
+   * // Conversely typecasting
+   * const convr = conversely;
+   * convr.numberOptions.noLeadingZero = false; // default
+   * convr.number(testValue); // returns 100
+   * convr.numberOptions.noLeadingZero = true; // overriding the default
+   * convr.number(testValue); // returns null
+   * ```
+   */
   noLeadingZero: boolean;
 }
 
