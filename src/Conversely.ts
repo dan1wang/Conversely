@@ -1,8 +1,7 @@
 'use strict';
 
-import {
-  Primitive, Wrapper, WrapperFn
-} from './global';
+import { Primitive, Wrapper, WrapperFn } from 'typing';
+// import { SYMBOL_IS_SUPPORTED } from './common';
 
 /**
  * Main object
@@ -33,135 +32,6 @@ export class Conversely {
       default:
         return null;
     }
-  }
-
-  /**
-   * Convert a boolean to 1 (true) or 0 (false).
-   */
-  number(src: boolean): number|null;
-
-  /**
-   * Convert a number to either a number or `null`.
-   * ```JavaScript
-   * numberify(Math.PI); // returns 3.141592653589793
-   * numberify(NaN); // returns null
-   * numberify(Infinity); // returns null
-   * ```
-   * If `src` is NaN or Infinity, `null` is returned.
-   * The behavior can be controlled by
-   * `Conversely.options.convert.NaN.toNaN` and
-   * `Conversely.options.convert.Infinity.toInfinity`
-   */
-  number(src: number):number|null;
-
-  /**
-   * Convert a string to either a number or `null`.
-   * ```JavaScript
-   * conversely.numberify('2 '); // returns 2
-   * conversely.numberify('2a'); // returns null
-   * ```
-   * If `src` is a decimal number, a number is retruned.
-   * Otherwise, `null` is returned.
-   * The behavior can be controlled by
-   * `Conversely.options.recognize.Infinity`,
-   * `Conversely.options.recognize.hex`,
-   * `Conversely.options.recognize.bin`,
-   * `Conversely.options.recognize.octal`,
-   * `Conversely.options.recognize.exp`,
-   * `Conversely.options.noLeadingZero` and
-   * `Conversely.options.convert.blank.toZero`.
-   */
-  number(src: string): number|null;
-
-  /**
-   * Convert `null` to either `null` or zero (0).
-   */
-  number(src: null): number|null;
-
-  /**
-   * Convert `undefined` to either `null` or `NaN`.
-   */
-  number(src: undefined): number|null;
-
-  number(v: Primitive): number|null {
-    switch (typeof v) {
-      case 'number':
-        // Use isFinite() instead of Number.isFinite() to target GAS
-        return isFinite(v) ? v : null;
-      case 'string':
-        // parseFloat() is not used because it can return inaccurate result
-        // e.g. Number.parseFloat('1.2a') returns 1.2
-        v = Number(v);
-        return isNaN(v) ? null : v;
-      case 'boolean':
-        return v ? 1 : 0;
-      default:
-        return null;
-    }
-  }
-
-
-  /**
-   * Strictly convert a string to either a finite number or `null`.
-   * See [[Conversely.number]].
-   * ```JavaScript
-   * numberify('2 '); // returns 2
-   * numberify('2a'); // returns null
-   * ```
-   */
-  numberify(src: Primitive): number|null;
-
-  /**
-   * Strictly convert an object to either a finite number or null. An object is
-   * convertible if it has a `valueOf()` or `toString()` method that returns
-   * a finite number, a string of a number, or a boolean.
-   * ```
-   * var range = {min: 0, max: 5};
-   * numberify(range); // returns null
-   * range.valueOf = function() {return this.max-this.min;};
-   * numberify(range); // returns 5
-   * ```
-   */
-  numberify(src: Wrapper): number|null;
-
-  /**
-   * Execute a function and strictly convert the returned value to
-   * either a finite number or null.
-   * ```
-   * var PI = function() {return Math.PI;};
-   * var ONE = function() {return '1';};
-   * var TRUE = function() {return true;};
-   * var NOW = function() {return new Date();};
-   * numberify(PI); // returns 3.141592653589793
-   * numberify(ONE); // returns 1
-   * numberify(TRUE); // returns 1
-   * numberify(NOW); // returns (new Date()).valueOf(), which is a number
-   * ```
-   */
-  numberify(src: WrapperFn): number|null;
-
-  numberify(src: Primitive|Wrapper|WrapperFn): number|null {
-    if (typeof src === 'function') {
-      src = (src as WrapperFn)();
-    }
-
-    if ((src === null) || (src === undefined)) return null;
-
-    if (typeof src === 'object') {
-      let objectValue: number|null = null;
-
-      if (typeof src.valueOf === 'function') {
-        objectValue = this.number(src.valueOf() as number);
-      }
-
-      if ((objectValue === null) && (typeof src.toString === 'function')) {
-        objectValue = this.number(src.toString() as string);
-      }
-
-      return objectValue;
-    }
-
-    return this.number(src as number);
   }
 
   /**
