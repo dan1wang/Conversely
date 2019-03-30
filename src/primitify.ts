@@ -28,14 +28,16 @@ export const SYMBOL_IS_SUPPORTED: boolean =
  * If the object can be evaluated successfully, return the evaluated
  * result. Otherwise, return `undefined`.
  *
- * @Param srcData Source data to be evaluated
- * @Param preferredType The preferred data type ('string' (default) or 'number').
- *                      when `srcData` is an object or a function returning
- *                      an object. Note this function will not coerce (typecast)
- *                      the object to the preferred data type.
+ * @Param srcData
+ *    Source data to be evaluated
+ * @Param preferredType
+ *    The preferred data type (`'string'` (default) or `'number'`) when
+ *    when the source data is an object or a function returning an object.
+ *    Note `primitify` will not coerce (typecast) the object to the
+ *    preferred data type.
  */
 export function primitify(srcData: Wrapper, preferredType?: 'string'|'number'):Primitive {
-  function isBNS(value):boolean {
+  function isBNS(value: Primitive):boolean {
     const t = typeof value;
     if ((t==='boolean')||(t==='number')||(t==='string')) {
       return true;
@@ -82,7 +84,7 @@ export function primitify(srcData: Wrapper, preferredType?: 'string'|'number'):P
   let objectString: Primitive = undefined; // tslint:disable-line:no-any
 
   if (typeof srcData.valueOf === 'function') {
-    try { objectValue = srcData.valueOf(); } catch(e) {}
+    try { objectValue = srcData.valueOf() as Primitive; } catch(e) {}
   }
 
   if ((typeof srcData.toString === 'function') && (srcData.toString !== Object.prototype.toString)) {
@@ -92,11 +94,11 @@ export function primitify(srcData: Wrapper, preferredType?: 'string'|'number'):P
   // .valueOf takes precedence unless string is the preferred type
   if (preferredType === 'string') {
     if (typeof objectString === 'string') return objectString;
-    if isBNS(objectValue) return objectValue;
-    if isBNS(objectString) return objectString;
+    if (isBNS(objectValue)) return objectValue;
+    if (isBNS(objectString)) return objectString;
   } else {
-    if isBNS(objectValue) return objectValue;
-    if isBNS(objectString) return objectString;
+    if (isBNS(objectValue)) return objectValue;
+    if (isBNS(objectString)) return objectString;
   }
 
   if ((objectString === null)||(objectValue === null)) {

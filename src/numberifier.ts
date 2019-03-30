@@ -6,7 +6,7 @@
 'use strict';
 
 import { Primitive, Wrapper, WrapperFn } from 'typing';
-import { SYMBOL_IS_SUPPORTED } from './common';
+import { SYMBOL_IS_SUPPORTED } from './primitify';
 
 /**
  * The **`Numberifier`** object contains methods for evaluating any data to
