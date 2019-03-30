@@ -1,6 +1,6 @@
 'use strict';
 
-import { Primitive, Wrapper, WrapperFn } from 'typing';
+import { Primitive, Wrapper, AccessorFn } from 'typing';
 // import { SYMBOL_IS_SUPPORTED } from './common';
 
 /**
@@ -84,10 +84,10 @@ export class Conversely {
    * booleanify(TRUE); // returns true
    * ```
    */
-  booleanify(src: WrapperFn): boolean|null;
+  booleanify(src: AccessorFn): boolean|null;
 
-  booleanify(src: Primitive|Wrapper|WrapperFn): boolean|null {
-    if (typeof src === 'function') { src = (src as WrapperFn)(); }
+  booleanify(src: Primitive|Wrapper|AccessorFn): boolean|null {
+    if (typeof src === 'function') { src = (src as AccessorFn)(); }
 
     if ((src === null) || (src === undefined)) return null;
 
@@ -108,7 +108,7 @@ export class Conversely {
     return this.boolean(src as boolean);
   }
 
-  stringify(src: Primitive|Wrapper|WrapperFn): string|null {
+  stringify(src: Primitive|Wrapper|AccessorFn): string|null {
     function __stringify(v: any): string|null {  // tslint:disable-line:no-any
       switch (typeof v) {
         case 'number':
@@ -123,7 +123,7 @@ export class Conversely {
       }
     }
 
-    if (typeof src === 'function') { src = (src as WrapperFn)(); }
+    if (typeof src === 'function') { src = (src as AccessorFn)(); }
 
     if ((src === null) || (src === undefined)) return null;
 

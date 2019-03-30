@@ -5,7 +5,7 @@
 
 'use strict';
 
-import { Primitive, Wrapper, WrapperFn } from 'typing';
+import { Primitive, Wrapper, AccessorFn } from 'typing';
 import { SYMBOL_IS_SUPPORTED } from './primitify';
 
 /**
@@ -407,11 +407,11 @@ export class Numberifier {
    * numberifier.numberify(NOW); // returns (new Date()).valueOf(), which is a number
    * ```
    */
-  numberify(src: WrapperFn): number|null;
+  numberify(src: AccessorFn): number|null;
 
-  numberify(src: Primitive|Wrapper|WrapperFn): number|null {
+  numberify(src: Primitive|Wrapper|AccessorFn): number|null {
     if (typeof src === 'function') {
-      src = (src as WrapperFn)();
+      src = (src as AccessorFn)();
     }
 
     if ((src === null) || (src === undefined)) return null;
@@ -434,6 +434,40 @@ export class Numberifier {
   }
 
 }
+
+/**
+ * When typecasting a data to a number and an error is encountered,
+ * JavaScript would natively return `NaN`, which confusingly is
+ * a "number" meaning "not a number":
+ *
+ * ```JavaScript
+ * var test = Number('?'); // returns NaN (not-a-number)
+ * typeof test; // returns "number"
+ * ```
+ *
+ * `NaN` has special properties that can lead to unexpected results:
+ * ```JavaScript
+ * test = Number('?');
+ * //
+ * // Regular comparison logic doesn't work on NaN
+ * test > 0; // returns false
+ * test < 0; // returns false
+ * test == NaN; // returns false
+ * test === NaN; // returns false
+ * //
+ * // Special syntax is needed to check for NaN
+ * isNaN(test); // returns true
+ * Number.isNaN(test); // returns true (not supported by IE/GAS)
+ * test !== test; // returns true
+ * ```
+ *
+ * By default, [[Numberifier]] converts `NaN` and `undefined` to `null`
+ * to simplify downstream error checking. Overriding this behavior is
+ * possible but **not recommended**.
+ *
+ */
+const NaN: number = Number.NaN; // tslint:disable-line:variable-name
+
 
 /*
 
@@ -465,4 +499,3 @@ Object.freeze(DEFAULT_CONVERSION_OPTIONS);
 */
 
 export const numberifier = new Numberifier();
-numberifier.options.valueOfNaN = NaN;
