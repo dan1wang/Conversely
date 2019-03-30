@@ -39,7 +39,7 @@
   "dependencies": {},
   "devDependencies": {
     "chai": "^4.2.0",
-    "eslint": "^5.15.3",
+    "eslint": "^5.16.0",
     "eslint-config-google": "^0.12.0",
     "gts": "^0.9.0",
     "mocha": "^6.0.2",
