@@ -2,7 +2,6 @@
  * Type definitions
  */
 declare module 'typing' {
-
   /** A primitive data type. */
   export type Primitive = boolean|number|string|null|undefined;
 
@@ -20,9 +19,9 @@ declare module 'typing' {
    *
    * ```JavaScript
    * // All of the following are accessor functions:
-   * hola = function(s) {return `Hola ${(typeof s === 'string') ? s : 'Mundo'}.`};
-   * coinToss = function() {return (Math.random() < 0.5) ? false : true;};
-   * whatsTheTime = function() {return new Date()};
+   * hola = function(s) {return `Hola ${(typeof s === 'string') ? s :
+   * 'Mundo'}.`}; coinToss = function() {return (Math.random() < 0.5) ? false :
+   * true;}; whatsTheTime = function() {return new Date()};
    * ```
    */
   export type AccessorFn = () => boolean|number|string|object;
@@ -32,7 +31,8 @@ declare module 'typing' {
   // export type BooleanArrayFn = () => boolean[];
   // export type NumberArrayFn = () => number[];
   // export type StringArrayFn = () => string[];
-  // export type WrapperArrayFn = BooleanArrayFn|NumberArrayFn|StringArrayFn|(() => Wrapper[]);
+  // export type WrapperArrayFn = BooleanArrayFn|NumberArrayFn|StringArrayFn|(()
+  // => Wrapper[]);
 
   // ************************** Wrapper Objects  **************************
 
@@ -53,7 +53,7 @@ declare module 'typing' {
    * ```
    */
   type WrapperOfValue = {
-    [key: string]: any, // tslint:disable-line:no-any
+    [key: string]: any,  // tslint:disable-line:no-any
     valueOf: () => Primitive;
   };
 
@@ -76,7 +76,7 @@ declare module 'typing' {
    * ```
    */
   type WrapperOfString = {
-    [key: string]: any, // tslint:disable-line:no-any
+    [key: string]: any,  // tslint:disable-line:no-any
     toString: () => Primitive;
   };
 
@@ -113,8 +113,8 @@ declare module 'typing' {
    * ```
    */
   type WrapperOfPrimitive = {
-    [key: string]: any, // tslint:disable-line:no-any
-    [Symbol.toPrimitive]: (hint?:string) => Primitive;
+    [key: string]: any,  // tslint:disable-line:no-any
+    [Symbol.toPrimitive]: (hint?: string) => Primitive;
   };
 
   /**
@@ -122,5 +122,4 @@ declare module 'typing' {
    * or `[Symbol.toPrimitive]()` method which returns a [[Primitive]].
    */
   export type Wrapper = WrapperOfValue|WrapperOfString|WrapperOfPrimitive;
-
 }

@@ -9,13 +9,13 @@ primitive or `null`.
 const Convr = require('conversely');
 
 // Converting a primitive
-Convr.numberify(true); // returns 1
+Convr.numberify(true); // Returns 1
 
 // Converting a function
 const TOSS_UP = function() {
   return (Math.random() < 0.5)?0:1;
 };
-Convr.booleanify(TOSS_UP); // returns true or false randomly
+Convr.booleanify(TOSS_UP); // Returns true or false randomly
 
 // Converting an object
 const johnDoe = {
@@ -23,7 +23,7 @@ const johnDoe = {
   lName: 'Doe',
   valueOf: function() { return this.fName + ' ' + this.lName; },
 };
-Convr.stringify(johnDoe); // returns 'John Doe'
+Convr.stringify(johnDoe); // Returns 'John Doe'
 ```
 
 ## Installation

@@ -39,7 +39,7 @@ function Person(fName, lName) {
 }
 var johnDoe = new Person('John','Doe');
 johnDoe.toString(); // return "[object Object]"
-Convr.stringify(johnDoe); // returns null
+Convr.stringify(johnDoe); // Returns null
 ```
 
 #### Example: object with custom `toString()` method:
@@ -74,7 +74,7 @@ Person.prototype.valueOf = function() {
   return (this.age>=18)?'adult':'child';
 }
 var littleJohn = new Person('Little','John',4);
-littleJohn.valueOf(); // returns "child"
-littleJohn.toString(); // returns "Little John"
-Convr.stringify(littleJohn); // returns "Little John"
+littleJohn.valueOf(); // Returns "child"
+littleJohn.toString(); // Returns "Little John"
+Convr.stringify(littleJohn); // Returns "Little John"
 ```

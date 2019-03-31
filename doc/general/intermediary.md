@@ -14,7 +14,7 @@ const distance = {
   valueOf: function() {return this.end - this.start;}
 };
 
-Convr.numberify(distance); // returns 109
+Convr.numberify(distance); // Returns 109
 ```
 
 ## Mechanism of evaluation

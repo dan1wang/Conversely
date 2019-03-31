@@ -4,45 +4,50 @@
 
 'use strict';
 
-import { Primitive, Wrapper, AccessorFn } from 'typing';
+import {Primitive, Wrapper, AccessorFn} from 'typing';
 
 /** @ignore */
 export const SYMBOL_IS_SUPPORTED: boolean =
-  ((typeof Symbol === 'function') &&
-   (typeof Symbol.toStringTag === 'symbol'));
+    ((typeof Symbol === 'function') &&
+     (typeof Symbol.toStringTag === 'symbol'));
 
- /**
-  * Class definition so we can call
-  * object[Symbol.toPrimitive] without compiler error.
-  * @ignore
-  */
- class ES6Object {
-   [Symbol.hasInstance]?: (instance: object) => string;
-   [Symbol.isConcatSpreadable]?: boolean;
-   [Symbol.iterator]?: Function;
-   [Symbol.match]?: boolean;
-   //[Symbol.matchAll]?: Function;
-   [Symbol.replace]?: Function;
-   [Symbol.search]?: Function;
-   [Symbol.species]?: Function;
-   [Symbol.split]?: Function;
-   [Symbol.toPrimitive]?: (hint?: string) => Primitive;
-   [Symbol.toStringTag]?: string;
-   [Symbol.unscopables]?: object;
- }
+/**
+ * Class definition so we can call
+ * object[Symbol.toPrimitive] without compiler error.
+ * @ignore
+ */
+class ES6Object {
+  [Symbol.hasInstance]?: (instance: object) => string;
+  [Symbol.isConcatSpreadable]?: boolean;
+  [Symbol.iterator]?: Function;
+  [Symbol.match]?: boolean;
+  //[Symbol.matchAll]?: Function;
+  [Symbol.replace]?: Function;
+  [Symbol.search]?: Function;
+  [Symbol.species]?: Function;
+  [Symbol.split]?: Function;
+  [Symbol.toPrimitive]?: (hint?: string) => Primitive;
+  [Symbol.toStringTag]?: string;
+  [Symbol.unscopables]?: object;
+}
 
 /**
  * Method to evaluate a source data of any type to a [[Primitive]].
  *
  * Returns the source data unchanged if it is already primitive.
  *
+ * ```JavaScript
+ * primitify(1000); // Returns 1000
+ * primitify(null); // Returns null
+ * ```
+ *
  * If the source data is a function, executes the function and evaluates
  * the returned data. If the returned data is another function, returns
  * `undefined`.
  *
  * ```JavaScript
- * primitify(function(){return 'hi'}); // 'hi'
- * primitify(function(){return true}); // true
+ * primitify(function(){return 'hi';}); // Returns 'hi'
+ * primitify(function(){return true;}); // Retruns true
  * ```
  *
  * If the source data (or the returned data of the previous function
@@ -52,8 +57,9 @@ export const SYMBOL_IS_SUPPORTED: boolean =
  *
  * ```JavaScript
  * const date = new Date(2019);
- * primitify(date,'string'); // "Tue, 01 Jan 2019 00:00:00 GMT"
- * primitify(date,'number'); // 1546300800000
+ * primitify(date,'string'); // Returns "Tue, 01 Jan 2019 00:00:00 GMT"
+ * primitify(date,'number'); // Returns 1546300800000
+ * primitify({}); // Returns undefined
  * ```
  *
  * @Param source
@@ -65,12 +71,11 @@ export const SYMBOL_IS_SUPPORTED: boolean =
  *    preferred data type.
  */
 export function primitify(
-  source: Primitive|Wrapper|AccessorFn,
-  preferredType?: 'string'|'number'
-):Primitive {
-  function isBNS(value: Primitive):boolean {
+    source: Primitive|Wrapper|AccessorFn,
+    preferredType?: 'string'|'number'): Primitive {
+  function isBNS(value: Primitive): boolean {
     const t = typeof value;
-    if ((t==='boolean')||(t==='number')||(t==='string')) {
+    if ((t === 'boolean') || (t === 'number') || (t === 'string')) {
       return true;
     }
     return false;
@@ -79,21 +84,24 @@ export function primitify(
   if (typeof source === 'function') {
     try {
       source = (source as AccessorFn)();
-    } catch(e) {
-      return undefined; // Execution error!
+    } catch (e) {
+      return undefined;  // Execution error!
     }
   }
 
-  if (source === null) return null; // typeof null === 'object';
+  if (source === null) return null;  // typeof null === 'object';
 
   switch (typeof source) {
     case 'string':
     case 'number':
     case 'boolean':
-    case 'undefined': return source;
-    case 'object': break;
-    case 'symbol': return undefined; // Symbol cannot be typecasted
-    default: return undefined; // A newer, shinier data type?
+      return source;
+    case 'object':
+      break;
+    case 'symbol':
+      return undefined;  // Symbol cannot be typecasted
+    default:
+      return undefined;  // 'undefined',or a newer, shinier data type?
   }
 
   preferredType = (preferredType === 'number') ? 'number' : 'string';
@@ -104,22 +112,31 @@ export function primitify(
       try {
         const result = toPrimitive(preferredType);
         // Only accept boolean, number, string, or null
-        if (isBNS(result)||result===null) { return result; }
-      } catch(e) {
+        if (isBNS(result) || result === null) {
+          return result;
+        }
+      } catch (e) {
         // Ignore error and try .valueOf() and .toString() instead
       }
     }
   }
 
-  let objectValue: Primitive = undefined;  // tslint:disable-line:no-any
-  let objectString: Primitive = undefined; // tslint:disable-line:no-any
+  let objectValue: Primitive = undefined;   // tslint:disable-line:no-any
+  let objectString: Primitive = undefined;  // tslint:disable-line:no-any
 
   if (typeof source.valueOf === 'function') {
-    try { objectValue = source.valueOf() as Primitive; } catch(e) {}
+    try {
+      objectValue = source.valueOf() as Primitive;
+    } catch (e) {
+    }
   }
 
-  if ((typeof source.toString === 'function') && (source.toString !== Object.prototype.toString)) {
-    try { objectString = source.toString(); } catch(e) {}
+  if ((typeof source.toString === 'function') &&
+      (source.toString !== Object.prototype.toString)) {
+    try {
+      objectString = source.toString();
+    } catch (e) {
+    }
   }
 
   // .valueOf takes precedence unless string is the preferred type
@@ -132,8 +149,5 @@ export function primitify(
     if (isBNS(objectString)) return objectString;
   }
 
-  if ((objectString === null)||(objectValue === null)) {
-    return null;
-  }
-  return undefined;
+  return ((objectString === null) || (objectValue === null)) ? null : undefined;
 }

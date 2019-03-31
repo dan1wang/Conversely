@@ -1,6 +1,6 @@
 'use strict';
 
-import { Primitive, Wrapper, AccessorFn } from 'typing';
+import {Primitive, Wrapper, AccessorFn} from 'typing';
 // import { SYMBOL_IS_SUPPORTED } from './common';
 
 /**
@@ -37,9 +37,9 @@ export class Conversely {
   /**
    * Strictly convert a string to either a boolean or null.
    * ```JavaScript
-   * booleanify('1'); // returns true
-   * booleanify('0'); // returns false
-   * booleanify('2'); // returns null
+   * booleanify('1'); // Returns true
+   * booleanify('0'); // Returns false
+   * booleanify('2'); // Returns null
    * ```
    */
   booleanify(src: string): boolean|null;
@@ -47,9 +47,9 @@ export class Conversely {
   /**
    * Strictly convert a number to either a boolean or null.
    * ```JavaScript
-   * booleanify(1); // returns true
-   * booleanify(0); // returns false
-   * booleanify(NaN); // returns null
+   * booleanify(1); // Returns true
+   * booleanify(0); // Returns false
+   * booleanify(NaN); // Returns null
    * ```
    */
   booleanify(src: number): boolean|null;
@@ -65,9 +65,9 @@ export class Conversely {
    * returns 1, 0, "1", "0", or a boolean.
    * ```JavaScript
    * var equal = {a: 1, b: 2};
-   * booleanify(equal); // returns null
+   * booleanify(equal); // Returns null
    * equal.valueOf = function() {return this.a==this.b;};
-   * booleanify(equal); // returns true
+   * booleanify(equal); // Returns true
    * ```
    */
   booleanify(src: Wrapper): boolean|null;
@@ -79,15 +79,17 @@ export class Conversely {
    * var TOSS_UP = function() {return (Math.random() < 0.5)?0:1;};
    * var ONE = function() {return '1';};
    * var TRUE = function() {return true;};
-   * booleanify(TOSS_UP); // returns true or false randomly
-   * booleanify(ONE); // returns true
-   * booleanify(TRUE); // returns true
+   * booleanify(TOSS_UP); // Returns true or false randomly
+   * booleanify(ONE); // Returns true
+   * booleanify(TRUE); // Returns true
    * ```
    */
   booleanify(src: AccessorFn): boolean|null;
 
   booleanify(src: Primitive|Wrapper|AccessorFn): boolean|null {
-    if (typeof src === 'function') { src = (src as AccessorFn)(); }
+    if (typeof src === 'function') {
+      src = (src as AccessorFn)();
+    }
 
     if ((src === null) || (src === undefined)) return null;
 
@@ -123,7 +125,9 @@ export class Conversely {
       }
     }
 
-    if (typeof src === 'function') { src = (src as AccessorFn)(); }
+    if (typeof src === 'function') {
+      src = (src as AccessorFn)();
+    }
 
     if ((src === null) || (src === undefined)) return null;
 

@@ -51,9 +51,9 @@ For primitive to primitive conversion:
 ```JavaScript
 import { stringify, stringify, booleanify } from 'conversely';
 
-numberify('1.1'); // returns 1.1
-stringify(0.3); // returns '0.3'
-booleanify(1); // returns true
+numberify('1.1'); // Returns 1.1
+stringify(0.3); // Returns '0.3'
+booleanify(1); // Returns true
 ```
 
 ### Intermediary Property
@@ -68,7 +68,7 @@ const person = {
   valueOf: function() { return this.fName + ' ' + this.lName; },
 };
 
-stringify(person); // returns 'John Doe'
+stringify(person); // Returns 'John Doe'
 ```
 
 ### Dynamic Evaluation
@@ -79,13 +79,13 @@ import { booleanify } from 'conversely';
 
 const TOSS_UP = function() {return (Math.random() < 0.5)?0:1;};
 
-booleanify(TOSS_UP); // returns true or false randomly
+booleanify(TOSS_UP); // Returns true or false randomly
 ```
 
 The library also works with function returning an intermediary property object:
 ```JavaScript
 const NOW = function() {return new Date() };
-numberify(NOW); // returns 1553307233321 or something like that
+numberify(NOW); // Returns 1553307233321 or something like that
 ```
 
 # Configuration
