@@ -1,6 +1,6 @@
 'use strict';
 
-import {Primitive, Wrapper, AccessorFn} from 'typing';
+import { Primitive, Wrapper, AccessorFn } from 'typing';
 // import { SYMBOL_IS_SUPPORTED } from './common';
 
 /**
@@ -19,7 +19,7 @@ export class Conversely {
    * if the value evaluates to 0, "0", or false. Otherwise, return `null`
    * (either true or false)..
    */
-  boolean(v: Primitive): boolean|null {
+  boolean(v: Primitive): boolean | null {
     switch (v) {
       case '1':
       case 1:
@@ -42,7 +42,7 @@ export class Conversely {
    * booleanify('2'); // Returns null
    * ```
    */
-  booleanify(src: string): boolean|null;
+  booleanify(src: string): boolean | null;
 
   /**
    * Strictly convert a number to either a boolean or null.
@@ -52,7 +52,7 @@ export class Conversely {
    * booleanify(NaN); // Returns null
    * ```
    */
-  booleanify(src: number): boolean|null;
+  booleanify(src: number): boolean | null;
 
   /**
    * Strictly convert a boolean to, well, a boolean.
@@ -70,7 +70,7 @@ export class Conversely {
    * booleanify(equal); // Returns true
    * ```
    */
-  booleanify(src: Wrapper): boolean|null;
+  booleanify(src: Wrapper): boolean | null;
 
   /**
    * Execute a function and strictly convert the returned value to
@@ -84,23 +84,23 @@ export class Conversely {
    * booleanify(TRUE); // Returns true
    * ```
    */
-  booleanify(src: AccessorFn): boolean|null;
+  booleanify(src: AccessorFn): boolean | null;
 
-  booleanify(src: Primitive|Wrapper|AccessorFn): boolean|null {
+  booleanify(src: Primitive | Wrapper | AccessorFn): boolean | null {
     if (typeof src === 'function') {
       src = (src as AccessorFn)();
     }
 
-    if ((src === null) || (src === undefined)) return null;
+    if (src === null || src === undefined) return null;
 
     if (typeof src === 'object') {
-      let objectValue: boolean|null = null;
+      let objectValue: boolean | null = null;
 
       if (typeof src.valueOf === 'function') {
         objectValue = this.boolean(src.valueOf() as Primitive);
       }
 
-      if ((objectValue === null) && (typeof src.toString === 'function')) {
+      if (objectValue === null && typeof src.toString === 'function') {
         objectValue = this.boolean(src.toString());
       }
 
@@ -110,8 +110,8 @@ export class Conversely {
     return this.boolean(src as boolean);
   }
 
-  stringify(src: Primitive|Wrapper|AccessorFn): string|null {
-    function __stringify(v: any): string|null {  // tslint:disable-line:no-any
+  stringify(src: Primitive | Wrapper | AccessorFn): string | null {
+    function __stringify(v: any): string | null { // tslint:disable-line:no-any
       switch (typeof v) {
         case 'number':
           // Do not convert Infinity or NaN
@@ -129,11 +129,11 @@ export class Conversely {
       src = (src as AccessorFn)();
     }
 
-    if ((src === null) || (src === undefined)) return null;
+    if (src === null || src === undefined) return null;
 
     if (typeof src === 'object') {
-      let objectValue: any = null;   // tslint:disable-line:no-any
-      let objectString: any = null;  // tslint:disable-line:no-any
+      let objectValue: any = null; // tslint:disable-line:no-any
+      let objectString: any = null; // tslint:disable-line:no-any
 
       if (typeof src.valueOf === 'function') {
         objectValue = src.valueOf();
@@ -146,7 +146,7 @@ export class Conversely {
 
       // valueOf() takes precedence unless stringify() is a string
       if (typeof objectString === 'string') return objectString;
-      if ((objectValue !== null) && (objectValue !== undefined)) {
+      if (objectValue !== null && objectValue !== undefined) {
         return __stringify(objectValue);
       }
       return __stringify(objectString);

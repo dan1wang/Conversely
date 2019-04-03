@@ -25,23 +25,22 @@
   "types": "dist/Conversely.d.ts",
   "scripts": {
     "build": "tsc",
-    "build-docs2": "typedoc --includeDeclarations --out docs src/",
     "build-docs": "typedoc",
-    "test": "mocha",
     "check": "gts check",
     "clean": "gts clean",
-    "fix": "gts fix",
     "compile": "tsc -p .",
+    "fix": "gts fix",
     "prepare": "npm run compile",
     "pretest": "npm run compile",
-    "posttest": "npm run check"
+    "posttest": "npm run check",
+    "test": "mocha"
   },
   "dependencies": {},
   "devDependencies": {
     "chai": "^4.2.0",
     "eslint": "^5.16.0",
     "eslint-config-google": "^0.12.0",
-    "gts": "^0.9.0",
+    "gts": "file:../gts",
     "mocha": "^6.0.2",
     "typedoc": "^0.14.2",
     "typescript": "^3.3.4"
