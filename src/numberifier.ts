@@ -6,26 +6,26 @@
 'use strict';
 
 import {Primitive, Wrapper, AccessorFn} from 'typing';
-import {SYMBOL_IS_SUPPORTED} from './primitify';
+import {SYMBOL_IS_SUPPORTED, primitify} from './primitify';
 
 /**
  * Options for setting data-to-number evaluation rules on
- * construction of the `Numberifier` object.
+ * construction of the <code>[[Numberifier]]</code> object.
  */
-interface NumberifierOptions {
-  valueOfNaN?: null|undefined|number;
-  valueOfUndefined?: null|undefined|number;
-  valueOfNull?: null|undefined|number;
-  valueOfBlank?: null|undefined|number;
-  valueOfInfinity?: null|undefined|number;
-  ignoreBin?: boolean;
-  ignoreExp?: boolean;
-  ignoreHex?: boolean;
-  ignoreOctal?: boolean;
-  ignoreInfinity?: boolean;
-  noLeadingZero?: boolean;
-  [key: string]: any;  // tslint:disable-line:no-any
-}
+type NumberifierOptions = {
+  valueOfNaN?: null|undefined|number,
+  valueOfUndefined?: null|undefined|number,
+  valueOfNull?: null|undefined|number,
+  valueOfBlank?: null|undefined|number,
+  valueOfInfinity?: null|undefined|number,
+  ignoreBin?: boolean,
+  ignoreExp?: boolean,
+  ignoreHex?: boolean,
+  ignoreOctal?: boolean,
+  ignoreInfinity?: boolean,
+  noLeadingZero?: boolean,
+  [key: string]: any  // tslint:disable-line:no-any
+};
 
 /**
  * The **`Numberifier`** object contains methods for evaluating any data to
@@ -542,27 +542,8 @@ export class Numberifier {
   numberify(src: AccessorFn): number|null|undefined;
 
   numberify(src: Primitive|Wrapper|AccessorFn): number|null|undefined {
-    if (typeof src === 'function') {
-      src = (src as AccessorFn)();
-    }
-
-    if ((src === null) || (src === undefined)) return null;
-
-    if (typeof src === 'object') {
-      let objectValue: number|null|undefined = null;
-
-      if (typeof src.valueOf === 'function') {
-        objectValue = this.number(src.valueOf() as number);
-      }
-
-      if ((objectValue === null) && (typeof src.toString === 'function')) {
-        objectValue = this.number(src.toString() as string);
-      }
-
-      return objectValue;
-    }
-
-    return this.number(src as number);
+    const val = primitify(src, 'number') as number;
+    return this.number( val );
   }
 }
 
@@ -597,7 +578,7 @@ export class Numberifier {
  * possible but **not recommended**.
  *
  */
-const NaN: number = Number.NaN;  // tslint:disable-line:variable-name
+declare const NaN: number;  // tslint:disable-line:variable-name
 
 
 /*
