@@ -3,7 +3,7 @@
  */
 declare module 'typing' {
   /** A primitive data type. */
-  export type Primitive = boolean|number|string|null|undefined;
+  export type Primitive = boolean | number | string | null | undefined;
 
   // Note: we can't actually test if a function is parameterless.
   // We could check if foo.length === 0 if a function is written like
@@ -24,7 +24,7 @@ declare module 'typing' {
    * true;}; whatsTheTime = function() {return new Date()};
    * ```
    */
-  export type AccessorFn = () => boolean|number|string|object;
+  export type AccessorFn = () => boolean | number | string | object;
 
   // ******************** Parameterless Array Functions *******************
 
@@ -52,10 +52,10 @@ declare module 'typing' {
    * };
    * ```
    */
-  type WrapperOfValue = {
-    [key: string]: any,  // tslint:disable-line:no-any
+  interface WrapperOfValue {
+    [key: string]: any; // tslint:disable-line:no-any
     valueOf: () => Primitive;
-  };
+  }
 
   /**
    * An object with a `toString()` method which returns a string.
@@ -75,10 +75,10 @@ declare module 'typing' {
    * };
    * ```
    */
-  type WrapperOfString = {
-    [key: string]: any,  // tslint:disable-line:no-any
+  interface WrapperOfString {
+    [key: string]: any; // tslint:disable-line:no-any
     toString: () => Primitive;
-  };
+  }
 
   /**
    * An object with a `[Symbol.toPrimitive]()` method which returns
@@ -112,14 +112,14 @@ declare module 'typing' {
    * String(jDoe); // Returns "John Doe"
    * ```
    */
-  type WrapperOfPrimitive = {
-    [key: string]: any,  // tslint:disable-line:no-any
+  interface WrapperOfPrimitive {
+    [key: string]: any; // tslint:disable-line:no-any
     [Symbol.toPrimitive]: (hint?: string) => Primitive;
-  };
+  }
 
   /**
    * A wrapper object with either a `valueOf()`, `toString()`,
    * or `[Symbol.toPrimitive]()` method which returns a [[Primitive]].
    */
-  export type Wrapper = WrapperOfValue|WrapperOfString|WrapperOfPrimitive;
+  export type Wrapper = WrapperOfValue | WrapperOfString | WrapperOfPrimitive;
 }

@@ -4,12 +4,11 @@
 
 'use strict';
 
-import {Primitive, Wrapper, AccessorFn} from 'typing';
+import { Primitive, Wrapper, AccessorFn } from 'typing';
 
 /** @ignore */
 export const SYMBOL_IS_SUPPORTED: boolean =
-    ((typeof Symbol === 'function') &&
-     (typeof Symbol.toStringTag === 'symbol'));
+  typeof Symbol === 'function' && typeof Symbol.toStringTag === 'symbol';
 
 /**
  * Class definition so we can call
@@ -17,18 +16,18 @@ export const SYMBOL_IS_SUPPORTED: boolean =
  * @ignore
  */
 class ES6Object {
-  [Symbol.hasInstance]?: (instance: object) => string;
-  [Symbol.isConcatSpreadable]?: boolean;
-  [Symbol.iterator]?: Function;
-  [Symbol.match]?: boolean;
+  [Symbol.hasInstance]: (instance: object) => string;
+  [Symbol.isConcatSpreadable]: boolean;
+  [Symbol.iterator]: Function;
+  [Symbol.match]: boolean;
   //[Symbol.matchAll]?: Function;
-  [Symbol.replace]?: Function;
-  [Symbol.search]?: Function;
-  [Symbol.species]?: Function;
-  [Symbol.split]?: Function;
-  [Symbol.toPrimitive]?: (hint?: string) => Primitive;
-  [Symbol.toStringTag]?: string;
-  [Symbol.unscopables]?: object;
+  [Symbol.replace]: Function;
+  [Symbol.search]: Function;
+  [Symbol.species]: Function;
+  [Symbol.split]: Function;
+  [Symbol.toPrimitive]: (hint?: string) => Primitive;
+  [Symbol.toStringTag]: string;
+  [Symbol.unscopables]: object;
 }
 
 /**
@@ -71,11 +70,12 @@ class ES6Object {
  *    preferred data type.
  */
 export function primitify(
-    source: Primitive|Wrapper|AccessorFn,
-    preferredType?: 'string'|'number'): Primitive {
+  source: Primitive | Wrapper | AccessorFn,
+  preferredType?: 'string' | 'number'
+): Primitive {
   function isBNS(value: Primitive): boolean {
     const t = typeof value;
-    if ((t === 'boolean') || (t === 'number') || (t === 'string')) {
+    if (t === 'boolean' || t === 'number' || t === 'string') {
       return true;
     }
     return false;
@@ -85,11 +85,11 @@ export function primitify(
     try {
       source = (source as AccessorFn)();
     } catch (e) {
-      return undefined;  // Execution error!
+      return undefined; // Execution error!
     }
   }
 
-  if (source === null) return null;  // typeof null === 'object';
+  if (source === null) return null; // typeof null === 'object';
 
   switch (typeof source) {
     case 'string':
@@ -99,12 +99,12 @@ export function primitify(
     case 'object':
       break;
     case 'symbol':
-      return undefined;  // Symbol cannot be typecasted
+      return undefined; // Symbol cannot be typecasted
     default:
-      return undefined;  // 'undefined',or a newer, shinier data type?
+      return undefined; // 'undefined',or a newer, shinier data type?
   }
 
-  preferredType = (preferredType === 'number') ? 'number' : 'string';
+  preferredType = preferredType === 'number' ? 'number' : 'string';
 
   if (SYMBOL_IS_SUPPORTED) {
     const toPrimitive = (source as ES6Object)[Symbol.toPrimitive];
@@ -121,22 +121,22 @@ export function primitify(
     }
   }
 
-  let objectValue: Primitive = undefined;   // tslint:disable-line:no-any
-  let objectString: Primitive = undefined;  // tslint:disable-line:no-any
+  let objectValue: Primitive = undefined; // tslint:disable-line:no-any
+  let objectString: Primitive = undefined; // tslint:disable-line:no-any
 
   if (typeof source.valueOf === 'function') {
     try {
       objectValue = source.valueOf() as Primitive;
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
-  if ((typeof source.toString === 'function') &&
-      (source.toString !== Object.prototype.toString)) {
+  if (
+    typeof source.toString === 'function' &&
+    source.toString !== Object.prototype.toString
+  ) {
     try {
       objectString = source.toString();
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   // .valueOf takes precedence unless string is the preferred type
@@ -149,5 +149,5 @@ export function primitify(
     if (isBNS(objectString)) return objectString;
   }
 
-  return ((objectString === null) || (objectValue === null)) ? null : undefined;
+  return objectString === null || objectValue === null ? null : undefined;
 }
